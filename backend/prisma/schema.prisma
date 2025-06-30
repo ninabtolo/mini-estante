@@ -1,0 +1,39 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  username     String    @id @db.VarChar(30)
+  password     String    @db.Text
+  nome         String    @db.VarChar(120)
+  tipo         String    @db.VarChar(1) 
+  status       String    @db.VarChar(1) 
+  quant_acesso Int       @default(0)
+  observacao   String?
+  failed_attempts Int    @default(0)  
+  
+  //relação com os livros
+  livros_lidos Book[]
+}
+
+model Book {
+  id        Int      @id @default(autoincrement())
+  titulo    String
+  autor     String
+  data_leitura DateTime
+  avaliacao Int?     
+  resenha   String?  @db.Text 
+
+  // Chave estrangeira para relacionar com o usuário
+  userId String @db.VarChar(30)
+  
+  // Define a relação
+  leitor User   @relation(fields: [userId], references: [username])
+
+  @@map("livros") 
+}
