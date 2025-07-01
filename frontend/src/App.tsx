@@ -3,8 +3,10 @@ import { AuthProvider, useAuth } from './contexts/AuthContext';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import UserRegistration from './pages/UserRegistration';
-import { useState } from 'react'
-import './App.css'
+import BookList from './pages/BookList';
+import BookForm from './pages/BookForm';
+import BookDetail from './pages/BookDetail';
+import './App.css';
 
 const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
   const { user, loading } = useAuth();
@@ -35,13 +37,12 @@ const AdminRoute = ({ children }: { children: JSX.Element }) => {
 };
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
     <AuthProvider>
       <Router>
         <Routes>
           <Route path="/login" element={<Login />} />
+          
           <Route 
             path="/dashboard" 
             element={
@@ -50,6 +51,7 @@ function App() {
               </ProtectedRoute>
             } 
           />
+          
           <Route
             path="/register-user"
             element={
@@ -58,11 +60,48 @@ function App() {
               </AdminRoute>
             }
           />
+          
+          <Route
+            path="/books"
+            element={
+              <ProtectedRoute>
+                <BookList />
+              </ProtectedRoute>
+            }
+          />
+          
+          <Route
+            path="/books/new"
+            element={
+              <ProtectedRoute>
+                <BookForm />
+              </ProtectedRoute>
+            }
+          />
+          
+          <Route
+            path="/books/:id"
+            element={
+              <ProtectedRoute>
+                <BookDetail />
+              </ProtectedRoute>
+            }
+          />
+          
+          <Route
+            path="/books/edit/:id"
+            element={
+              <ProtectedRoute>
+                <BookForm />
+              </ProtectedRoute>
+            }
+          />
+          
           <Route path="/" element={<Navigate to="/dashboard" />} />
         </Routes>
       </Router>
     </AuthProvider>
-  )
+  );
 }
 
-export default App
+export default App;

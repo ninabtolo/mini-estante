@@ -28,7 +28,8 @@ const Dashboard: React.FC = () => {
         
         <div className="user-books">
           <h3>Meus Livros</h3>
-          {/* User's books would be displayed here */}
+          <p>Gerencie sua coleção de livros.</p>
+          <Link to="/books" className="books-button">Ver Meus Livros</Link>
         </div>
       </main>
     </div>

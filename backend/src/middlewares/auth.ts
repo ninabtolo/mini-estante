@@ -14,6 +14,7 @@ declare global {
     interface Request {
       user?: {
         id: string;
+        userId: string;
         tipo: string;
       };
     }
@@ -57,6 +58,7 @@ export const authMiddleware = async (
 
     req.user = {
       id: decoded.id,
+      userId: user.username, // Adicionando o username como userId
       tipo: decoded.tipo
     };
 

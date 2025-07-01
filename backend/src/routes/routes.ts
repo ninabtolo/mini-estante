@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import AuthController from '../controllers/AuthController';
 import UserController from '../controllers/UserController';
+import BookController from '../controllers/BookController';
 import { authMiddleware, adminMiddleware } from '../middlewares/auth';
 
 const routes = Router();
@@ -11,6 +12,13 @@ routes.post('/logout', AuthController.logout);
 
 // rotas protegidas
 routes.use(authMiddleware);
+
+// rotas de livros (todos os usuários autenticados)
+routes.get('/books', BookController.index);
+routes.get('/books/:id', BookController.show);
+routes.post('/books', BookController.create);
+routes.put('/books/:id', BookController.update);
+routes.delete('/books/:id', BookController.delete);
 
 // rotas do admin
 routes.post('/users', adminMiddleware, UserController.create);
