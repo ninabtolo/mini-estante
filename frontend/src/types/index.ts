@@ -14,5 +14,5 @@ export interface User {
   tipo: string;
   status?: string;
   quant_acesso?: number;
-  observacao?: string;
+}
 }

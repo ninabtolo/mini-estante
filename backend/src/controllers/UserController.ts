@@ -5,7 +5,7 @@ import prisma from '../lib/prisma';
 class UserController {
   async create(req: Request, res: Response) {
     try {
-      let { username, password, nome, tipo, observacao } = req.body;
+      let { username, password, nome, tipo } = req.body;
 
       if (!username || !password || !nome || !tipo) {
         return res.status(400).json({ error: 'Missing required fields' });
@@ -15,10 +15,6 @@ class UserController {
       nome = nome.trim();
       tipo = tipo.trim();
       
-      if (observacao) {
-        observacao = observacao.trim();
-      }
-
       if (username.length > 30) {
         return res.status(400).json({ error: 'Username must be 30 characters or less' });
       }
@@ -44,7 +40,6 @@ class UserController {
           nome,
           tipo,
           status: 'A', // padrão = ativo
-          observacao: observacao || null,
           quant_acesso: 0,
           failed_attempts: 0
         }
@@ -72,8 +67,7 @@ class UserController {
           nome: true,
           tipo: true,
           status: true,
-          quant_acesso: true,
-          observacao: true
+          quant_acesso: true
         }
       });
 

@@ -14,7 +14,6 @@ model User {
   tipo         String    @db.VarChar(1) 
   status       String    @db.VarChar(1) 
   quant_acesso Int       @default(0)
-  observacao   String?
   failed_attempts Int    @default(0)  
   
   //relação com os livros

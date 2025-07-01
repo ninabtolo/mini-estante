@@ -27,8 +27,7 @@ async function createAdminUser() {
         tipo: '0', 
         status: 'A',
         quant_acesso: 0,
-        failed_attempts: 0,
-        observacao: 'Initial admin user'
+        failed_attempts: 0
       }
     });
 

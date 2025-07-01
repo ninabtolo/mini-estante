@@ -6,7 +6,6 @@ CREATE TABLE "User" (
     "tipo" CHAR(1) NOT NULL,
     "status" CHAR(1) NOT NULL,
     "quant_acesso" INTEGER NOT NULL DEFAULT 0,
-    "observacao" TEXT,
     "failed_attempts" INTEGER NOT NULL DEFAULT 0,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("username")

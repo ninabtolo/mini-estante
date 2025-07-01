@@ -9,8 +9,7 @@ const UserRegistration: React.FC = () => {
     username: '',
     password: '',
     nome: '',
-    tipo: '1', 
-    observacao: ''
+    tipo: '1'
   });
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
@@ -42,8 +41,7 @@ const UserRegistration: React.FC = () => {
         username: '',
         password: '',
         nome: '',
-        tipo: '1',
-        observacao: ''
+        tipo: '1'
       });
     } catch (err: any) {
       setError(err.response?.data?.error || 'Erro ao criar usuário');
@@ -110,16 +108,6 @@ const UserRegistration: React.FC = () => {
             <option value="0">Administrador</option>
             <option value="1">Usuário Comum</option>
           </select>
-        </div>
-        
-        <div className="form-group">
-          <label htmlFor="observacao">Observações</label>
-          <textarea
-            id="observacao"
-            name="observacao"
-            value={formData.observacao}
-            onChange={handleChange}
-          />
         </div>
         
         <button type="submit" disabled={loading}>
