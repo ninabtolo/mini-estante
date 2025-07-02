@@ -3,6 +3,9 @@ import { Link } from 'react-router-dom';
 import api from '../services/api';
 import type { Book } from '../types';
 import { useAuth } from '../contexts/AuthContext';
+import Header from '../components/Header';
+import LoadingSpinner from '../components/LoadingSpinner';
+import Button from '../components/Button';
 
 const BookList: React.FC = () => {
   const [books, setBooks] = useState<Book[]>([]);
@@ -43,56 +46,78 @@ const BookList: React.FC = () => {
     return date.toLocaleDateString('pt-BR');
   };
   
-  if (loading) {
-    return <div>Carregando livros...</div>;
-  }
-  
-  if (error) {
-    return <div className="error-message">{error}</div>;
-  }
-  
   return (
-    <div className="book-list-container">
-      <div className="list-header">
-        <h2>Meus Livros</h2>
-        <Link to="/books/new" className="add-button">Adicionar Livro</Link>
-      </div>
+    <div>
+      <Header />
       
-      {books.length === 0 ? (
-        <p>Você ainda não tem livros registrados.</p>
-      ) : (
-        <table className="book-table">
-          <thead>
-            <tr>
-              <th>Título</th>
-              <th>Autor</th>
-              <th>Data de Leitura</th>
-              <th>Avaliação</th>
-              <th>Ações</th>
-            </tr>
-          </thead>
-          <tbody>
-            {books.map(book => (
-              <tr key={book.id}>
-                <td>{book.titulo}</td>
-                <td>{book.autor}</td>
-                <td>{formatDate(book.data_leitura)}</td>
-                <td>{book.avaliacao ? `${book.avaliacao}/5` : 'N/A'}</td>
-                <td>
-                  <Link to={`/books/${book.id}`} className="view-button">Ver</Link>
-                  <Link to={`/books/edit/${book.id}`} className="edit-button">Editar</Link>
-                  <button 
-                    onClick={() => handleDelete(book.id)} 
-                    className="delete-button"
-                  >
-                    Excluir
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
+      <div className="page-container">
+        <div className="list-header fade-in">
+          <h2>Meus Livros</h2>
+          <Link to="/books/new" className="btn btn-primary">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            Adicionar Livro
+          </Link>
+        </div>
+        
+        {loading ? (
+          <LoadingSpinner />
+        ) : error ? (
+          <div className="error-message fade-in">{error}</div>
+        ) : books.length === 0 ? (
+          <div className="empty-state fade-in">
+            <p>Você ainda não tem livros registrados.</p>
+            <Link to="/books/new" className="btn btn-primary mt-4">
+              Adicionar Meu Primeiro Livro
+            </Link>
+          </div>
+        ) : (
+          <div className="fade-in">
+            <div className="book-table-container">
+              <table className="book-table">
+                <thead>
+                  <tr>
+                    <th>Título</th>
+                    <th>Autor</th>
+                    <th>Data de Leitura</th>
+                    <th>Avaliação</th>
+                    <th>Ações</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {books.map(book => (
+                    <tr key={book.id} className="book-row">
+                      <td>{book.titulo}</td>
+                      <td>{book.autor}</td>
+                      <td>{formatDate(book.data_leitura)}</td>
+                      <td>{book.avaliacao ? `${book.avaliacao}/5` : 'N/A'}</td>
+                      <td>
+                        <div className="table-actions">
+                          <Link to={`/books/${book.id}`} className="btn btn-outline btn-sm">
+                            Ver
+                          </Link>
+                          <Link to={`/books/edit/${book.id}`} className="btn btn-secondary btn-sm">
+                            Editar
+                          </Link>
+                          <Button 
+                            variant="danger"
+                            size="sm"
+                            onClick={() => handleDelete(book.id)}
+                          >
+                            Excluir
+                          </Button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

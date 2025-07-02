@@ -6,13 +6,18 @@ import UserRegistration from './pages/UserRegistration';
 import BookList from './pages/BookList';
 import BookForm from './pages/BookForm';
 import BookDetail from './pages/BookDetail';
+import LoadingSpinner from './components/LoadingSpinner';
 import './App.css';
 
 const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
   const { user, loading } = useAuth();
   
   if (loading) {
-    return <div>Carregando...</div>;
+    return (
+      <div className="page-container">
+        <LoadingSpinner />
+      </div>
+    );
   }
   
   if (!user) {
@@ -26,7 +31,11 @@ const AdminRoute = ({ children }: { children: JSX.Element }) => {
   const { user, isAdmin, loading } = useAuth();
   
   if (loading) {
-    return <div>Carregando...</div>;
+    return (
+      <div className="page-container">
+        <LoadingSpinner />
+      </div>
+    );
   }
   
   if (!user || !isAdmin) {

@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import api from '../services/api';
 import type { Book } from '../types';
+import Header from '../components/Header';
+import LoadingSpinner from '../components/LoadingSpinner';
+import Button from '../components/Button';
 
 const BookDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -44,39 +47,81 @@ const BookDetail: React.FC = () => {
     return date.toLocaleDateString('pt-BR');
   };
   
-  if (loading) {
-    return <div>Carregando...</div>;
-  }
-  
-  if (error) {
-    return <div className="error-message">{error}</div>;
-  }
-  
-  if (!book) {
-    return <div>Livro não encontrado</div>;
-  }
+  const renderStars = (rating: number | null) => {
+    if (!rating) return 'Não avaliado';
+    
+    const stars = [];
+    for (let i = 1; i <= 5; i++) {
+      if (i <= rating) {
+        stars.push(
+          <svg key={i} xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="text-yellow-500">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+          </svg>
+        );
+      } else {
+        stars.push(
+          <svg key={i} xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="text-gray-400">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+          </svg>
+        );
+      }
+    }
+    
+    return <div className="rating-stars">{stars}</div>;
+  };
   
   return (
-    <div className="book-detail-container">
-      <h2>{book.titulo}</h2>
+    <div>
+      <Header />
       
-      <div className="book-info">
-        <p><strong>Autor:</strong> {book.autor}</p>
-        <p><strong>Data de Leitura:</strong> {formatDate(book.data_leitura)}</p>
-        <p><strong>Avaliação:</strong> {book.avaliacao ? `${book.avaliacao}/5` : 'Não avaliado'}</p>
-        
-        {book.resenha && (
-          <div className="book-review">
-            <h3>Resenha</h3>
-            <p>{book.resenha}</p>
+      <div className="page-container">
+        {loading ? (
+          <LoadingSpinner />
+        ) : error ? (
+          <div className="error-message">{error}</div>
+        ) : book ? (
+          <div className="book-detail-container fade-in">
+            <h2>{book.titulo}</h2>
+            
+            <div className="book-info">
+              <div className="book-info-item">
+                <span className="book-info-label">Autor:</span>
+                <span>{book.autor}</span>
+              </div>
+              
+              <div className="book-info-item">
+                <span className="book-info-label">Data de Leitura:</span>
+                <span>{formatDate(book.data_leitura)}</span>
+              </div>
+              
+              <div className="book-info-item">
+                <span className="book-info-label">Avaliação:</span>
+                <span>{renderStars(book.avaliacao)}</span>
+              </div>
+              
+              {book.resenha && (
+                <div className="book-review">
+                  <h3>Resenha</h3>
+                  <p>{book.resenha}</p>
+                </div>
+              )}
+            </div>
+            
+            <div className="action-buttons">
+              <Link to="/books" className="btn btn-outline">
+                Voltar para a Lista
+              </Link>
+              <Link to={`/books/edit/${book.id}`} className="btn btn-secondary">
+                Editar
+              </Link>
+              <Button variant="danger" onClick={handleDelete}>
+                Excluir
+              </Button>
+            </div>
           </div>
+        ) : (
+          <div>Livro não encontrado</div>
         )}
-      </div>
-      
-      <div className="action-buttons">
-        <Link to="/books" className="back-button">Voltar para a Lista</Link>
-        <Link to={`/books/edit/${book.id}`} className="edit-button">Editar</Link>
-        <button onClick={handleDelete} className="delete-button">Excluir</button>
       </div>
     </div>
   );

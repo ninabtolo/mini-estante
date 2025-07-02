@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import type { Book } from '../types';
+import Header from '../components/Header';
+import LoadingSpinner from '../components/LoadingSpinner';
+import Button from '../components/Button';
 
 const BookForm: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -84,89 +87,112 @@ const BookForm: React.FC = () => {
   };
   
   if (loading) {
-    return <div>Carregando...</div>;
+    return (
+      <div>
+        <Header />
+        <div className="page-container">
+          <LoadingSpinner />
+        </div>
+      </div>
+    );
   }
   
   return (
-    <div className="book-form-container">
-      <h2>{isEditing ? 'Editar Livro' : 'Adicionar Novo Livro'}</h2>
+    <div>
+      <Header />
       
-      {error && <div className="error-message">{error}</div>}
-      
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="titulo">Título</label>
-          <input
-            id="titulo"
-            name="titulo"
-            type="text"
-            value={formData.titulo}
-            onChange={handleChange}
-            required
-          />
+      <div className="page-container">
+        <div className="form-container fade-in">
+          <h2 className="form-title">{isEditing ? 'Editar Livro' : 'Adicionar Novo Livro'}</h2>
+          
+          {error && <div className="error-message">{error}</div>}
+          
+          <form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label htmlFor="titulo">Título</label>
+              <input
+                id="titulo"
+                name="titulo"
+                type="text"
+                value={formData.titulo}
+                onChange={handleChange}
+                required
+                placeholder="Digite o título do livro"
+              />
+            </div>
+            
+            <div className="form-group">
+              <label htmlFor="autor">Autor</label>
+              <input
+                id="autor"
+                name="autor"
+                type="text"
+                value={formData.autor}
+                onChange={handleChange}
+                required
+                placeholder="Digite o nome do autor"
+              />
+            </div>
+            
+            <div className="form-group">
+              <label htmlFor="data_leitura">Data de Leitura</label>
+              <input
+                id="data_leitura"
+                name="data_leitura"
+                type="date"
+                value={formData.data_leitura}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            
+            <div className="form-group">
+              <label htmlFor="avaliacao">Avaliação</label>
+              <select
+                id="avaliacao"
+                name="avaliacao"
+                value={formData.avaliacao}
+                onChange={handleChange}
+              >
+                <option value="">Selecione uma avaliação</option>
+                <option value="1">1 - Muito ruim</option>
+                <option value="2">2 - Ruim</option>
+                <option value="3">3 - Regular</option>
+                <option value="4">4 - Bom</option>
+                <option value="5">5 - Excelente</option>
+              </select>
+            </div>
+            
+            <div className="form-group">
+              <label htmlFor="resenha">Resenha</label>
+              <textarea
+                id="resenha"
+                name="resenha"
+                value={formData.resenha}
+                onChange={handleChange}
+                rows={5}
+                placeholder="Escreva sua resenha sobre o livro (opcional)"
+              />
+            </div>
+            
+            <div className="form-buttons">
+              <Button 
+                type="button" 
+                variant="outline" 
+                onClick={() => navigate('/books')}
+              >
+                Cancelar
+              </Button>
+              <Button 
+                type="submit" 
+                isLoading={submitting} 
+              >
+                {submitting ? 'Salvando...' : isEditing ? 'Atualizar' : 'Adicionar'}
+              </Button>
+            </div>
+          </form>
         </div>
-        
-        <div className="form-group">
-          <label htmlFor="autor">Autor</label>
-          <input
-            id="autor"
-            name="autor"
-            type="text"
-            value={formData.autor}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        
-        <div className="form-group">
-          <label htmlFor="data_leitura">Data de Leitura</label>
-          <input
-            id="data_leitura"
-            name="data_leitura"
-            type="date"
-            value={formData.data_leitura}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        
-        <div className="form-group">
-          <label htmlFor="avaliacao">Avaliação</label>
-          <select
-            id="avaliacao"
-            name="avaliacao"
-            value={formData.avaliacao}
-            onChange={handleChange}
-          >
-            <option value="">Selecione uma avaliação</option>
-            <option value="1">1 - Muito ruim</option>
-            <option value="2">2 - Ruim</option>
-            <option value="3">3 - Regular</option>
-            <option value="4">4 - Bom</option>
-            <option value="5">5 - Excelente</option>
-          </select>
-        </div>
-        
-        <div className="form-group">
-          <label htmlFor="resenha">Resenha</label>
-          <textarea
-            id="resenha"
-            name="resenha"
-            value={formData.resenha}
-            onChange={handleChange}
-            rows={5}
-          />
-        </div>
-        
-        <div className="form-buttons">
-          <button type="button" onClick={() => navigate('/books')} className="cancel-button">
-            Cancelar
-          </button>
-          <button type="submit" disabled={submitting} className="submit-button">
-            {submitting ? 'Salvando...' : isEditing ? 'Atualizar' : 'Adicionar'}
-          </button>
-        </div>
-      </form>
+      </div>
     </div>
   );
 };

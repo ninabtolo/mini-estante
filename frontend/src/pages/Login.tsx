@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import Button from '../components/Button';
 
 const Login: React.FC = () => {
   const [username, setUsername] = useState('');
@@ -35,33 +36,45 @@ const Login: React.FC = () => {
 
   return (
     <div className="login-container">
-      <h1>Mini Estante</h1>
-      <form onSubmit={handleSubmit}>
-        {error && <p className="error">{error}</p>}
-        <div className="form-group">
-          <label htmlFor="username">Usuário</label>
-          <input
-            id="username"
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-        </div>
+      <div className="login-card fade-in">
+        <h1 className="login-title">Mini Estante</h1>
         
-        <div className="form-group">
-          <label htmlFor="password">Senha</label>
-          <input
-            id="password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
-        
-        <button type="submit" disabled={loading}>
-          {loading ? 'Carregando...' : 'Entrar'}
-        </button>
-      </form>
+        <form onSubmit={handleSubmit}>
+          {error && <div className="error-message">{error}</div>}
+          
+          <div className="form-group">
+            <label htmlFor="username">Usuário</label>
+            <input
+              id="username"
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              autoComplete="username"
+              placeholder="Digite seu nome de usuário"
+            />
+          </div>
+          
+          <div className="form-group">
+            <label htmlFor="password">Senha</label>
+            <input
+              id="password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              autoComplete="current-password"
+              placeholder="Digite sua senha"
+            />
+          </div>
+          
+          <Button 
+            type="submit" 
+            isLoading={loading}
+            className="w-100 mt-4"
+          >
+            {loading ? 'Entrando...' : 'Entrar'}
+          </Button>
+        </form>
+      </div>
     </div>
   );
 };

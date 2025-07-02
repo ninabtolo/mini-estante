@@ -1,35 +1,56 @@
 import React from 'react';
-import { useAuth } from '../contexts/AuthContext';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
+import Header from '../components/Header';
+import Card from '../components/Card';
 
 const Dashboard: React.FC = () => {
-  const { user, signOut, isAdmin } = useAuth();
+  const { user, isAdmin } = useAuth();
 
   return (
     <div className="dashboard-container">
-      <header>
-        <h1>Mini Estante</h1>
-        <div className="user-info">
-          <span>Olá, {user.nome}</span>
-          <button onClick={signOut}>Sair</button>
+      <Header />
+      
+      <main className="page-container">
+        <div className="dashboard-header fade-in">
+          <h2>Dashboard</h2>
+          <p>Bem-vindo à sua Mini Estante, gerencie suas leituras em um só lugar.</p>
         </div>
-      </header>
-
-      <main>
-        <h2>Dashboard</h2>
         
-        {isAdmin && (
-          <div className="admin-panel">
-            <h3>Painel de Administração</h3>
-            <p>Como administrador, você pode gerenciar usuários e ter acesso a todas as funcionalidades.</p>
-            <Link to="/register-user" className="admin-button">Cadastrar Novo Usuário</Link>
-          </div>
-        )}
-        
-        <div className="user-books">
-          <h3>Meus Livros</h3>
-          <p>Gerencie sua coleção de livros.</p>
-          <Link to="/books" className="books-button">Ver Meus Livros</Link>
+        <div className="dashboard-cards fade-in">
+          <Card className="dashboard-card">
+            <div className="dashboard-card-title">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+              </svg>
+              Meus Livros
+            </div>
+            <p className="dashboard-card-content">
+              Gerencie sua coleção de livros, adicione novos títulos e registre suas impressões.
+            </p>
+            <Link to="/books" className="btn btn-primary">
+              Ver Meus Livros
+            </Link>
+          </Card>
+          
+          {isAdmin && (
+            <Card className="dashboard-card">
+              <div className="dashboard-card-title">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                Administração
+              </div>
+              <p className="dashboard-card-content">
+                Como administrador, você pode gerenciar usuários e ter acesso a todas as funcionalidades.
+              </p>
+              <Link to="/register-user" className="btn btn-primary">
+                Cadastrar Novo Usuário
+              </Link>
+            </Card>
+          )}
         </div>
       </main>
     </div>
