@@ -8,7 +8,7 @@ class UserController {
       let { username, password, nome, tipo } = req.body;
 
       if (!username || !password || !nome || !tipo) {
-        return res.status(400).json({ error: 'Missing required fields' });
+        return res.status(400).json({ error: 'Campos obrigatórios não preenchidos' });
       }
 
       username = username.trim();
@@ -16,11 +16,11 @@ class UserController {
       tipo = tipo.trim();
       
       if (username.length > 30) {
-        return res.status(400).json({ error: 'Username must be 30 characters or less' });
+        return res.status(400).json({ error: 'Nome de usuário deve ter 30 caracteres ou menos' });
       }
 
       if (nome.length > 120) {
-        return res.status(400).json({ error: 'Name must be 120 characters or less' });
+        return res.status(400).json({ error: 'Nome deve ter 120 caracteres ou menos' });
       }
 
       const userExists = await prisma.user.findUnique({
@@ -28,7 +28,7 @@ class UserController {
       });
 
       if (userExists) {
-        return res.status(400).json({ error: 'Username already exists' });
+        return res.status(400).json({ error: 'Nome de usuário já existe' });
       }
 
       const hashedPassword = await bcrypt.hash(password, 12);
@@ -45,7 +45,7 @@ class UserController {
         }
       });
 
-      console.log(`User created successfully: ${username}`);
+      console.log(`Usuário criado com sucesso: ${username}`);
 
       return res.status(201).json({
         username: user.username,
@@ -54,8 +54,8 @@ class UserController {
         status: user.status
       });
     } catch (error) {
-      console.error('User creation error:', error);
-      return res.status(500).json({ error: 'Internal server error' });
+      console.error('Erro na criação do usuário:', error);
+      return res.status(500).json({ error: 'Erro interno do servidor' });
     }
   }
 
@@ -74,7 +74,7 @@ class UserController {
       return res.json(users);
     } catch (error) {
       console.error(error);
-      return res.status(500).json({ error: 'Internal server error' });
+      return res.status(500).json({ error: 'Erro interno do servidor' });
     }
   }
 
@@ -84,7 +84,7 @@ class UserController {
       const { status } = req.body;
 
       if (!['A', 'I', 'B'].includes(status)) {
-        return res.status(400).json({ error: 'Invalid status' });
+        return res.status(400).json({ error: 'Status inválido' });
       }
 
       const user = await prisma.user.findUnique({
@@ -92,7 +92,7 @@ class UserController {
       });
 
       if (!user) {
-        return res.status(404).json({ error: 'User not found' });
+        return res.status(404).json({ error: 'Usuário não encontrado' });
       }
 
       await prisma.user.update({
@@ -100,10 +100,46 @@ class UserController {
         data: { status }
       });
 
-      return res.json({ message: 'User status updated successfully' });
+      return res.json({ message: 'Status do usuário atualizado com sucesso' });
     } catch (error) {
       console.error(error);
-      return res.status(500).json({ error: 'Internal server error' });
+      return res.status(500).json({ error: 'Erro interno do servidor' });
+    }
+  }
+
+  async changePassword(req: Request, res: Response) {
+    try {
+      const { currentPassword, newPassword } = req.body;
+      const username = req.user?.userId;
+
+      if (!currentPassword || !newPassword) {
+        return res.status(400).json({ error: 'Senha atual e nova senha são obrigatórias' });
+      }
+
+      const user = await prisma.user.findUnique({
+        where: { username }
+      });
+
+      if (!user) {
+        return res.status(404).json({ error: 'Usuário não encontrado' });
+      }
+
+      const passwordMatch = await bcrypt.compare(currentPassword, user.password);
+      if (!passwordMatch) {
+        return res.status(401).json({ error: 'Senha atual incorreta' });
+      }
+
+      const hashedPassword = await bcrypt.hash(newPassword, 12);
+
+      await prisma.user.update({
+        where: { username },
+        data: { password: hashedPassword }
+      });
+
+      return res.json({ message: 'Senha atualizada com sucesso' });
+    } catch (error) {
+      console.error('Erro na alteração de senha:', error);
+      return res.status(500).json({ error: 'Erro interno do servidor' });
     }
   }
 }

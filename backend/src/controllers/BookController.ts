@@ -22,8 +22,8 @@ class BookController {
       
       return res.json(books);
     } catch (error) {
-      console.error('Error fetching books:', error);
-      return res.status(500).json({ error: 'Internal server error' });
+      console.error('Erro ao buscar livros:', error);
+      return res.status(500).json({ error: 'Erro interno do servidor' });
     }
   }
 
@@ -37,17 +37,17 @@ class BookController {
       });
       
       if (!book) {
-        return res.status(404).json({ error: 'Book not found' });
+        return res.status(404).json({ error: 'Livro não encontrado' });
       }
       
       if (book.userId !== userId && tipo !== '0') {
-        return res.status(403).json({ error: 'Permission denied' });
+        return res.status(403).json({ error: 'Permissão negada' });
       }
       
       return res.json(book);
     } catch (error) {
-      console.error('Error fetching book:', error);
-      return res.status(500).json({ error: 'Internal server error' });
+      console.error('Erro ao buscar livro:', error);
+      return res.status(500).json({ error: 'Erro interno do servidor' });
     }
   }
 
@@ -57,11 +57,11 @@ class BookController {
       const { titulo, autor, data_leitura, avaliacao, resenha } = req.body;
       
       if (!titulo || !autor || !data_leitura) {
-        return res.status(400).json({ error: 'Missing required fields' });
+        return res.status(400).json({ error: 'Campos obrigatórios não preenchidos' });
       }
       
       if (avaliacao && (avaliacao < 1 || avaliacao > 5)) {
-        return res.status(400).json({ error: 'Rating must be between 1 and 5' });
+        return res.status(400).json({ error: 'Avaliação deve estar entre 1 e 5' });
       }
       
       const book = await prisma.book.create({
@@ -77,8 +77,8 @@ class BookController {
       
       return res.status(201).json(book);
     } catch (error) {
-      console.error('Error creating book:', error);
-      return res.status(500).json({ error: 'Internal server error' });
+      console.error('Erro ao criar livro:', error);
+      return res.status(500).json({ error: 'Erro interno do servidor' });
     }
   }
 
@@ -93,15 +93,15 @@ class BookController {
       });
       
       if (!book) {
-        return res.status(404).json({ error: 'Book not found' });
+        return res.status(404).json({ error: 'Livro não encontrado' });
       }
       
       if (book.userId !== userId && tipo !== '0') {
-        return res.status(403).json({ error: 'Permission denied' });
+        return res.status(403).json({ error: 'Permissão negada' });
       }
       
       if (avaliacao && (avaliacao < 1 || avaliacao > 5)) {
-        return res.status(400).json({ error: 'Rating must be between 1 and 5' });
+        return res.status(400).json({ error: 'Avaliação deve estar entre 1 e 5' });
       }
       
       const updatedBook = await prisma.book.update({
@@ -117,8 +117,8 @@ class BookController {
       
       return res.json(updatedBook);
     } catch (error) {
-      console.error('Error updating book:', error);
-      return res.status(500).json({ error: 'Internal server error' });
+      console.error('Erro ao atualizar livro:', error);
+      return res.status(500).json({ error: 'Erro interno do servidor' });
     }
   }
 
@@ -132,11 +132,11 @@ class BookController {
       });
       
       if (!book) {
-        return res.status(404).json({ error: 'Book not found' });
+        return res.status(404).json({ error: 'Livro não encontrado' });
       }
       
       if (book.userId !== userId && tipo !== '0') {
-        return res.status(403).json({ error: 'Permission denied' });
+        return res.status(403).json({ error: 'Permissão negada' });
       }
       
       await prisma.book.delete({
@@ -145,8 +145,8 @@ class BookController {
       
       return res.status(204).send();
     } catch (error) {
-      console.error('Error deleting book:', error);
-      return res.status(500).json({ error: 'Internal server error' });
+      console.error('Erro ao excluir livro:', error);
+      return res.status(500).json({ error: 'Erro interno do servidor' });
     }
   }
 }

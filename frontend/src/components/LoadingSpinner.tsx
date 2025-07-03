@@ -20,7 +20,7 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
       <div 
         className={`loading-spinner ${sizeClass}`}
         role="status"
-        aria-label="Loading"
+        aria-label="Carregando"
       />
     </div>
   );

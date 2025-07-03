@@ -20,6 +20,9 @@ routes.post('/books', BookController.create);
 routes.put('/books/:id', BookController.update);
 routes.delete('/books/:id', BookController.delete);
 
+// rota para alteração de senha (qualquer usuário autenticado)
+routes.post('/users/change-password', UserController.changePassword);
+
 // rotas do admin
 routes.post('/users', adminMiddleware, UserController.create);
 routes.get('/users', adminMiddleware, UserController.index);

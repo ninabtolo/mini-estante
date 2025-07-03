@@ -29,7 +29,7 @@ export const authMiddleware = async (
   const authHeader = req.headers.authorization;
 
   if (!authHeader) {
-    return res.status(401).json({ error: 'Token not provided' });
+    return res.status(401).json({ error: 'Token não fornecido' });
   }
 
   const [, token] = authHeader.split(' ');
@@ -45,15 +45,15 @@ export const authMiddleware = async (
     });
 
     if (!user) {
-      return res.status(401).json({ error: 'Invalid token' });
+      return res.status(401).json({ error: 'Token inválido' });
     }
 
     if (user.status === 'B') {
-      return res.status(403).json({ error: 'User is blocked' });
+      return res.status(403).json({ error: 'Usuário está bloqueado' });
     }
 
     if (user.status === 'I') {
-      return res.status(403).json({ error: 'User is inactive' });
+      return res.status(403).json({ error: 'Usuário está inativo' });
     }
 
     req.user = {
@@ -64,8 +64,8 @@ export const authMiddleware = async (
 
     return next();
   } catch (err) {
-    console.error('Auth middleware error:', err);
-    return res.status(401).json({ error: 'Invalid token' });
+    console.error('Erro no middleware de autenticação:', err);
+    return res.status(401).json({ error: 'Token inválido' });
   }
 };
 
@@ -75,7 +75,7 @@ export const adminMiddleware = (
   next: NextFunction
 ) => {
   if (req.user?.tipo !== '0') {
-    return res.status(403).json({ error: 'Permission denied' });
+    return res.status(403).json({ error: 'Permissão negada' });
   }
 
   return next();

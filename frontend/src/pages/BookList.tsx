@@ -92,7 +92,7 @@ const BookList: React.FC = () => {
                       <td>{book.titulo}</td>
                       <td>{book.autor}</td>
                       <td>{formatDate(book.data_leitura)}</td>
-                      <td>{book.avaliacao ? `${book.avaliacao}/5` : 'N/A'}</td>
+                      <td>{book.avaliacao ? `${book.avaliacao}/5` : 'Não avaliado'}</td>
                       <td>
                         <div className="table-actions">
                           <Link to={`/books/${book.id}`} className="btn btn-outline btn-sm">

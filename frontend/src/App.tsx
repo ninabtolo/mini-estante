@@ -6,6 +6,7 @@ import UserRegistration from './pages/UserRegistration';
 import BookList from './pages/BookList';
 import BookForm from './pages/BookForm';
 import BookDetail from './pages/BookDetail';
+import PasswordChange from './pages/PasswordChange';
 import LoadingSpinner from './components/LoadingSpinner';
 import './App.css';
 
@@ -102,6 +103,15 @@ function App() {
             element={
               <ProtectedRoute>
                 <BookForm />
+              </ProtectedRoute>
+            }
+          />
+          
+          <Route
+            path="/change-password"
+            element={
+              <ProtectedRoute>
+                <PasswordChange />
               </ProtectedRoute>
             }
           />

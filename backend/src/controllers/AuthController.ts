@@ -9,7 +9,7 @@ class AuthController {
       const { username, password } = req.body;
 
       if (!username || !password) {
-        return res.status(400).json({ error: 'Username and password are required' });
+        return res.status(400).json({ error: 'Nome de usuário e senha são obrigatórios' });
       }
 
       // tive q fazer trim no username para evitar problemas com espaços em branco
@@ -20,22 +20,22 @@ class AuthController {
       });
 
       if (!user) {
-        console.log(`Login failed: User ${trimmedUsername} not found`);
-        return res.status(401).json({ error: 'Invalid credentials' });
+        console.log(`Falha no login: Usuário ${trimmedUsername} não encontrado`);
+        return res.status(401).json({ error: 'Credenciais inválidas' });
       }
 
       if (user.status === 'B') {
-        return res.status(403).json({ error: 'User is blocked' });
+        return res.status(403).json({ error: 'Usuário está bloqueado' });
       }
 
       if (user.status === 'I') {
-        return res.status(403).json({ error: 'User is inactive' });
+        return res.status(403).json({ error: 'Usuário está inativo' });
       }
 
       const passwordMatch = await bcrypt.compare(password, user.password);
 
       if (!passwordMatch) {
-        console.log(`Login failed: Password mismatch for user ${trimmedUsername}`);
+        console.log(`Falha no login: Senha incorreta para o usuário ${trimmedUsername}`);
       
         const failedAttempts = user.failed_attempts + 1;
         
@@ -47,7 +47,7 @@ class AuthController {
               failed_attempts: failedAttempts
             }
           });
-          return res.status(403).json({ error: 'User blocked due to multiple failed attempts' });
+          return res.status(403).json({ error: 'Usuário bloqueado devido a múltiplas tentativas falhas' });
         }
         
         await prisma.user.update({
@@ -55,7 +55,7 @@ class AuthController {
           data: { failed_attempts: failedAttempts }
         });
         
-        return res.status(401).json({ error: 'Invalid credentials' });
+        return res.status(401).json({ error: 'Credenciais inválidas' });
       }
 
       await prisma.user.update({
@@ -81,8 +81,8 @@ class AuthController {
         token
       });
     } catch (error) {
-      console.error('Login error:', error);
-      return res.status(500).json({ error: 'Internal server error' });
+      console.error('Erro no login:', error);
+      return res.status(500).json({ error: 'Erro interno do servidor' });
     }
   }
 
