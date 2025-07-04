@@ -5,6 +5,7 @@ interface User {
   username: string;
   nome: string;
   tipo: string;
+  quant_acesso?: number;
 }
 
 interface AuthState {

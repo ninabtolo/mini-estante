@@ -76,7 +76,8 @@ class AuthController {
         user: {
           username: user.username,
           nome: user.nome,
-          tipo: user.tipo
+          tipo: user.tipo,
+          quant_acesso: user.quant_acesso
         },
         token
       });
