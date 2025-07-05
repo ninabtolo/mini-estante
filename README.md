@@ -31,7 +31,7 @@ CREATE DATABASE mini_estante;
 ```
 - (Opcional) Altere o usuário/senha/porta conforme sua instalação.
 
--- eu prefiro ir diretamente no psql, colocar as credenciais e digitar diretamente o comando:
+- eu prefiro ir diretamente no psql, colocar as credenciais e digitar diretamente o comando:
 
 ```bash
 CREATE DATABASE mini_estante;
