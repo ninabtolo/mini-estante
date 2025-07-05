@@ -101,6 +101,7 @@ O frontend estará disponível em `http://localhost:5173` (ou porta do Vite).
 ## Observações
 
 - O backend espera um banco PostgreSQL rodando e acessível conforme o `.env`.
+- Os scripts de criação do banco de dados estão na pasta `prisma`
 - O frontend faz requisições para o backend (ajuste CORS se necessário).
 - A redefinição de senha por e-mail é simulada e explicada pelos comentários no código. 
 
