@@ -7,20 +7,36 @@ class BookController {
       const { userId } = req.user!;
       const { tipo } = req.user!;
       
+      const page = Number(req.query.page || 1);
+      const limit = Number(req.query.limit || 7);
+      const skip = (page - 1) * limit;
+      
+      let whereClause = {};
+      
       if (tipo === '0' && req.query.userId) {
-        const books = await prisma.book.findMany({
-          where: { userId: String(req.query.userId) },
-          orderBy: { data_leitura: 'desc' }
-        });
-        return res.json(books);
+        whereClause = { userId: String(req.query.userId) };
+      } else {
+        whereClause = { userId };
       }
       
-      const books = await prisma.book.findMany({
-        where: { userId },
-        orderBy: { data_leitura: 'desc' }
-      });
+      const [books, total] = await Promise.all([
+        prisma.book.findMany({
+          where: whereClause,
+          orderBy: { data_leitura: 'desc' },
+          skip,
+          take: limit
+        }),
+        prisma.book.count({
+          where: whereClause
+        })
+      ]);
       
-      return res.json(books);
+      return res.json({
+        books,
+        total,
+        totalPages: Math.ceil(total / limit),
+        currentPage: page
+      });
     } catch (error) {
       console.error('Erro ao buscar livros:', error);
       return res.status(500).json({ error: 'Erro interno do servidor' });
