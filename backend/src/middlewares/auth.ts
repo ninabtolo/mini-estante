@@ -58,7 +58,7 @@ export const authMiddleware = async (
 
     req.user = {
       id: decoded.id,
-      userId: user.username, // Adicionando o username como userId
+      userId: user.username,
       tipo: decoded.tipo
     };
 

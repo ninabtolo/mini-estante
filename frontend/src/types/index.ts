@@ -15,4 +15,3 @@ export interface User {
   status?: string;
   quant_acesso?: number;
 }
-}

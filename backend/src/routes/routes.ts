@@ -10,6 +10,12 @@ const routes = Router();
 routes.post('/login', AuthController.login);
 routes.post('/logout', AuthController.logout);
 
+// Rotas para recuperação de senha
+// Estas rotas seriam públicas pois são acessadas antes do login
+// routes.post('/forgot-password', AuthController.forgotPassword);
+// routes.get('/reset-password/validate/:token', AuthController.validateResetToken);
+// routes.post('/reset-password/:token', AuthController.resetPassword);
+
 // rotas protegidas
 routes.use(authMiddleware);
 

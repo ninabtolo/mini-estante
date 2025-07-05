@@ -16,6 +16,12 @@ model User {
   quant_acesso Int       @default(0)
   failed_attempts Int    @default(0)  
   
+  // Campos necessários para recuperação de senha
+  // O campo email seria necessário para enviar o link de recuperação
+  // email        String?   @db.VarChar(120) @unique
+  // reset_token  String?   @db.Text
+  // reset_token_expires DateTime?
+  
   //relação com os livros
   livros_lidos Book[]
 }

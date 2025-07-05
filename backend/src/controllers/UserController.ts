@@ -6,10 +6,17 @@ class UserController {
   async create(req: Request, res: Response) {
     try {
       let { username, password, nome, tipo } = req.body;
+      // Em uma implementação real de recuperação de senha por email, o campo email seria obrigatório aqui:
+      // let { username, password, nome, tipo, email } = req.body;
 
       if (!username || !password || !nome || !tipo) {
         return res.status(400).json({ error: 'Campos obrigatórios não preenchidos' });
       }
+
+      // Em uma implementação real, seria necessário validar o email:
+      // if (!email || !isValidEmail(email)) {
+      //   return res.status(400).json({ error: 'Email inválido' });
+      // }
 
       username = username.trim();
       nome = nome.trim();
@@ -42,6 +49,7 @@ class UserController {
           status: 'A', // padrão = ativo
           quant_acesso: 0,
           failed_attempts: 0
+          // Para recuperação de senha: email: email.trim()
         }
       });
 

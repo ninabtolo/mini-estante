@@ -8,6 +8,8 @@ import BookForm from './pages/BookForm';
 import BookDetail from './pages/BookDetail';
 import PasswordChange from './pages/PasswordChange';
 import LoadingSpinner from './components/LoadingSpinner';
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
 import './App.css';
 
 const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
@@ -52,6 +54,9 @@ function App() {
       <Router>
         <Routes>
           <Route path="/login" element={<Login />} />
+          
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password/:token" element={<ResetPassword />} />
           
           <Route 
             path="/dashboard" 

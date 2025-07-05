@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import Button from '../components/Button';
 
@@ -74,6 +74,10 @@ const Login: React.FC = () => {
             {loading ? 'Entrando...' : 'Entrar'}
           </Button>
         </form>
+        
+        <div className="forgot-password-link mt-8 text-center">
+          <Link to="/forgot-password">Esqueci minha senha</Link>
+        </div>
       </div>
     </div>
   );

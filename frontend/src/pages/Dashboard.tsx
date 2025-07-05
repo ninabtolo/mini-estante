@@ -5,7 +5,7 @@ import Header from '../components/Header';
 import Card from '../components/Card';
 
 const Dashboard: React.FC = () => {
-  const { user, isAdmin } = useAuth();
+  const {isAdmin } = useAuth();
 
   return (
     <div className="dashboard-container">
