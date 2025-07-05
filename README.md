@@ -29,8 +29,13 @@ cd mini_estante
 psql -U postgres
 CREATE DATABASE mini_estante;
 ```
-
 - (Opcional) Altere o usuário/senha/porta conforme sua instalação.
+
+-- eu prefiro ir diretamente no psql, colocar as credenciais e digitar diretamente o comando:
+
+```bash
+CREATE DATABASE mini_estante;
+```
 
 ### 3. Configure as variáveis de ambiente
 
@@ -62,7 +67,7 @@ npx prisma generate
 npx ts-node createAdmin.ts
 ```
 
-> Isso criará um usuário admin padrão (veja o script para usuário/senha).
+> Isso criará um usuário admin padrão, que é o que você utilizará para entrar no site pela primeira vez (veja o script para usuário/senha).
 
 ### 7. Inicie o backend
 
@@ -70,7 +75,7 @@ npx ts-node createAdmin.ts
 npm run dev
 ```
 
-O backend estará rodando em `http://localhost:3333` (ou porta definida no `.env`).
+O backend estará rodando em `http://localhost:3333`.
 
 ---
 
@@ -97,8 +102,7 @@ O frontend estará disponível em `http://localhost:5173` (ou porta do Vite).
 
 - O backend espera um banco PostgreSQL rodando e acessível conforme o `.env`.
 - O frontend faz requisições para o backend (ajuste CORS se necessário).
-- O usuário admin é criado via script e pode ser usado para acessar a área administrativa.
-- Para redefinição de senha por email, seria necessário implementar e configurar SMTP e campos extras (veja comentários no código).
+- A redefinição de senha por e-mail é simulada e explicada pelos comentários no código. 
 
 ---
 
